@@ -2,19 +2,25 @@
 
 2D gravitational N-body simulation with a [Barnes-Hut](https://www.nature.com/articles/324446a0) quadtree and kick-drift-kick leapfrog. The script compares the tree against direct O(N²) summation for force error and runtime, then collides two disk galaxies.
 
+[Preview](#preview) · [Method](#method) · [Setup](#setup) · [Run](#run) · [Tests](#test) · [Results](#results)
+
+## Preview
+
 ![two disk galaxies colliding](galaxies.gif)
+
+## Method
 
 The tree is built recursively. The force walk handles a whole batch of target bodies at each node: bodies that see the node under the opening angle `theta` take its monopole, and the rest move on to the children. That keeps the code to a single short recursive function and still puts the arithmetic in numpy. Direct summation is vectorized numpy, chunked to limit memory.
 
 ## Setup
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
 ## Run
 
-```
+```bash
 python nbody.py           # benchmark up to N=8000 + 1002-body collision, about 2.5 min
 python nbody.py --quick   # smaller benchmark + 302-body collision, about 40 s
 ```
@@ -23,7 +29,13 @@ python nbody.py --quick   # smaller benchmark + 302-body collision, about 40 s
 
 ## Test
 
+Install pytest in addition to the simulation dependencies:
+
+```bash
+pip install pytest
 ```
+
+```bash
 python -m pytest -q
 ```
 
